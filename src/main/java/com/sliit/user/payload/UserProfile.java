@@ -1,49 +1,37 @@
 package com.sliit.user.payload;
 
-import java.time.Instant;
-
 public class UserProfile {
-	private Long id;
-	private String username;
-	private String name;
-	private Instant joinedAt;
+	private String firstName;
+	private String lastName;
+	private String email;
 
-	public UserProfile(Long id, String username, String name, Instant joinedAt) {
-		this.id = id;
-		this.username = username;
-		this.name = name;
-		this.joinedAt = joinedAt;
+	public UserProfile(String firstName, String lastName, String email) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 
-	public Long getId() {
-		return id;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setFirstName(String name) {
+		this.firstName = name;
 	}
 
-	public String getName() {
-		return name;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Instant getJoinedAt() {
-		return joinedAt;
-	}
-
-	public void setJoinedAt(Instant joinedAt) {
-		this.joinedAt = joinedAt;
+	public void setLastName(String name) {
+		this.lastName = name;
 	}
 }

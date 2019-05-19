@@ -1,6 +1,7 @@
 package com.sliit.user.model;
 
 import com.sliit.user.model.audit.DateAudit;
+
 import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -21,13 +22,16 @@ public class User extends DateAudit {
 
 	@NotBlank
 	@Size(max = 40)
-	private String name;
+	private String firstName;
+
+	@Size(max = 40)
+	private String lastName;
 
 	@NotBlank
 	@Size(max = 15)
 	private String username;
 
-	@NaturalId
+	@NaturalId(mutable = true)
 	@NotBlank
 	@Size(max = 40)
 	@Email
@@ -37,7 +41,7 @@ public class User extends DateAudit {
 	@Size(max = 100)
 	private String password;
 
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles = new HashSet<Role>();
 
@@ -45,8 +49,9 @@ public class User extends DateAudit {
 
 	}
 
-	public User(String name, String username, String email, String password) {
-		this.name = name;
+	public User(String firstName, String lastName, String username, String email, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.username = username;
 		this.email = email;
 		this.password = password;
@@ -68,12 +73,20 @@ public class User extends DateAudit {
 		this.username = username;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String name) {
+		this.firstName = name;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String name) {
+		this.lastName = name;
 	}
 
 	public String getEmail() {
