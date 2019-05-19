@@ -64,6 +64,7 @@ public class UserController {
 	}
 
 	@GetMapping("/users/{username}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public UserProfile getUserProfile(@PathVariable(value = "username") String username) {
 		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
@@ -73,7 +74,8 @@ public class UserController {
 		return userProfile;
 	}
 
-	@PutMapping("/users/{username}")
+	@PutMapping("/user/me")
+	@PreAuthorize("hasRole('USER')")
 	public ResponseEntity<?> saveUserProfile(@Valid @RequestBody UserProfile userProfile,
 			@CurrentUser UserPrincipal currentUser) {
 		User user = userRepository.findByUsername(currentUser.getUsername())
@@ -83,10 +85,9 @@ public class UserController {
 		user.setFirstName(userProfile.getFirstName());
 		user.setLastName(userProfile.getLastName());
 
-		User result = userRepository.save(user);
+		userRepository.save(user);
 
-		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/{username}")
-				.buildAndExpand(result.getUsername()).toUri();
+		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/users/me").build().toUri();
 
 		return ResponseEntity.created(location).body(new ApiResponse(true, "User details saved successfully"));
 	}
